@@ -61,11 +61,33 @@ router
   })
   // 显示相册列表 => 请求 '/'
   .get('/', (req, res, next) => {
-
+    pool.getConnection((err,connection)=>{
+      if(err) return next(err);
+      connection.query('select * from album_dir',(err,results)=>{
+        // 查询完毕完毕,释放链接
+        connection.release();
+        if(err) return next(err);
+        res.render('index.html',{
+          album:results
+        })
+      })
+    })
   })
   // 显示照片列表 => '/showDir'
   .get('/showDir', (req, res, next) => {
-
+    let dirname = req.query.dir;
+    pool.getConnection((err,connection)=>{
+      if(err) return next(err);
+      connection.query('select * from album_file where dir = ?', [dirname],(err,results)=>{
+        // 释放数据库链接
+        connection.release();
+        if(err) return next(err);
+        res.render('album.html',{
+          album:results,
+          dir:dirname  //为新增照片准备的
+        })
+      })
+    })
   })
   // 添加目录  => '/addDir'
   .post('/showDir', (req, res, next) => {
@@ -81,10 +103,12 @@ router
 
 
 // 3-根据请求处理响应
-
+//  处理静态文件和相册目录
+app.use('/public',express.static('./public'));
+app.use('resource',express.static('./resource'));
 
 //  路由中间件执行列表
-app.use(router)
+app.use(router);
 //  错误处理中间件
 app.use((err,req,res,next)=>{
   console.log(err);
@@ -93,7 +117,7 @@ app.use((err,req,res,next)=>{
         <a href="/">去首页玩耍</a>
   `)
   
-})
+});
 
 
 
