@@ -1,0 +1,17 @@
+{
+  "name": "myalbum",
+  "version": "1.0.0",
+  "description": "实现简单的增删改查的精致小相册",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "art-template": "^4.12.2",
+    "express": "^4.16.2",
+    "express-art-template": "^1.0.0",
+    "mysql": "^2.15.0"
+  }
+}
