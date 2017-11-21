@@ -26,11 +26,11 @@ const path = require('path');
 //  引入数据库对象
 const mysql = require('mysql');
 //  建立数据库链接
-const poll = mysql.createPool({
+const pool = mysql.createPool({
   connectionLimit: 10,
   host: '127.0.0.1',
   user: 'root',
-  password: 'root',
+  password: 'wby123',
   database: 'album'
 })
 
@@ -40,12 +40,24 @@ const poll = mysql.createPool({
 //2- 创建服务器
 let app = express();
 // 配置模版引擎
+app.engine('html',require('express-art-template'))
 // 配置路由规则==
 let router = express.Router();
 router
   // 测试路由
   .get('/text', (req, res, next) => {
-
+      pool.getConnection((err,connection)=>{
+        // 处理链接时的异常
+        if (err) return next(err);
+        connection.query('select * from album_dir', (err, results, fields)=>{
+          //查询完毕以后,及时释放链接
+          connection.release()
+          if (err) return next(err);
+          res.render('test.html',{
+            text:results[1].dir
+          })
+        })
+      })
   })
   // 显示相册列表 => 请求 '/'
   .get('/', (req, res, next) => {

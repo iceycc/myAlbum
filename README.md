@@ -110,34 +110,46 @@
     app.use()
   ````
 * mysql模块引入
+  ```` javascript
+    //  引入数据库对象
+    const mysql = require('mysql');
+    //  建立数据库链接
+    const poll = mysql.createPool({
+      connectionLimit: 10,
+      host: '127.0.0.1',
+      user: 'root',
+      password: 'root',
+      database: 'album'
+    })
+  ````
 * 中间件设置
-  * 应用中间件
   * 路由中间件
   ````javascript
   // 配置路由规则==
-let router = express.Router();
-router
-  // 测试路由
-  .get('/text', (req, res, next) => {
+    let router = express.Router();
+    router
+      // 测试路由
+      .get('/text', (req, res, next) => {
 
-  })
-  // 显示相册列表 => 请求 '/'
-  .get('/', (req, res, next) => {
+      })
+      // 显示相册列表 => 请求 '/'
+      .get('/', (req, res, next) => {
 
-  })
-  // 显示照片列表 => '/showDir'
-  .get('/showDir', (req, res, next) => {
+      })
+      // 显示照片列表 => '/showDir'
+      .get('/showDir', (req, res, next) => {
 
-  })
-  // 添加目录  => '/addDir'
-  .post('/showDir', (req, res, next) => {
+      })
+      // 添加目录  => '/addDir'
+      .post('/showDir', (req, res, next) => {
 
-  })
-  // 添加照片  => '/addPic'
-  .post('/addPic', (req, res, next) => {
+      })
+      // 添加照片  => '/addPic'
+      .post('/addPic', (req, res, next) => {
 
-  })
+      })
   ````
   * 内置中间件
   * 第三方中间件
+  * 应用中间件
   * 错误处理中间件
